@@ -1,20 +1,24 @@
+/** @file sha1.hpp
+
+   constexpr SHA1 for C++17
+
+   
+ */
 #ifndef c77d421f_6208_485b_8244_b9ffb1452284
 #define c77d421f_6208_485b_8244_b9ffb1452284
-#ifndef MODULE_EXPORT
+
 #include <cstddef>
 #include <cstdint>
 #include <string_view>
-#define MODULE_EXPORT
-#endif
 
 
-///constexpr SHA1 for C++17
 
-MODULE_EXPORT class SHA1
+
+class SHA1
 {
 public:
 
-    class Digest {
+    class Digest { //can't use array, because not constexpr in C++17
     public:
         constexpr Digest () = default;
         constexpr Digest(std::initializer_list<unsigned char> lst) {
