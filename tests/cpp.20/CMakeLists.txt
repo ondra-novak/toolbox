@@ -1,6 +1,6 @@
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tests/cpp.20)
 
-set(testFiles FunctionView.cpp OpenHashMap.cpp TypeName.cpp)
+set(testFiles FunctionView.cpp OpenHashMap.cpp TypeName.cpp AnyRef.cpp)
 set(CXX_STANDARD 20)
 
 foreach (testFile ${testFiles})

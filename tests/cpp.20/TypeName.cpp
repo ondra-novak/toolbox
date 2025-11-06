@@ -1,9 +1,5 @@
 #include <cpp.20/TypeName.hpp>
 
-template<typename T>
-static constexpr auto type_name = GenerateTypeName<T>::get_type_name();
-template<typename T>
-static constexpr auto type_name_hash = GenerateTypeName<T>::get_hash();
 
 struct TestClass {};
 

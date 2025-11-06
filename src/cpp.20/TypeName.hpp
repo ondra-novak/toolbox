@@ -43,7 +43,30 @@ struct GenerateTypeName {
             return sn2.substr(0,pos);
         }
     }
+
+
+    static constexpr std::size_t get_hash()  {
+         std::string_view s = get_type_name();
+        if constexpr(sizeof(std::size_t) == 4) {
+            std::size_t h = 2166136261u;
+            for (char c : s)
+                h = (h ^ static_cast<unsigned char>(c)) * 16777619u;
+            return h;
+        } else {
+            // constexpr FNV-1a 64-bit
+            std::size_t h = 1469598103934665603ull;
+            for (char c : s)
+                h = (h ^ static_cast<unsigned char>(c)) * 1099511628211ull;
+            return h;
+        }    
+    }
     
 };
+
+template<typename T>
+static constexpr auto type_name = GenerateTypeName<T>::get_type_name();
+template<typename T>
+static constexpr auto type_name_hash = GenerateTypeName<T>::get_hash();
+
 
 #endif

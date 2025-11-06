@@ -1,6 +1,7 @@
 #include <cpp.20/OpenHashMap.hpp>
 
 
+
 struct PrimHash {
     constexpr std::size_t operator()(int x) const {return static_cast<std::size_t>(x);}
 };
