@@ -18,7 +18,7 @@ public:
     ///Create AnyRef from a Type (must not be AnyRef or ConstAnyRef)
     template<typename T>
     requires(!std::is_same_v<std::decay_t<T>, AnyRefGeneric<true> > && !std::is_same_v<std::decay_t<T>, AnyRefGeneric<false> >)
-    constexpr AnyRefGeneric(T &val):_ref(&val),_type(type_name_hash<T>) {}
+    constexpr AnyRefGeneric(T &val):_ref(&val),_type(type_name_hash<std::remove_cvref_t<T> >) {}
 
     constexpr AnyRefGeneric(const AnyRefGeneric<false> &other) requires (is_const) 
         :_ref(other._ref), _type(other._type) {}
@@ -36,23 +36,23 @@ public:
     ///Check whether AnyRef holds a value of type T
     template<typename T>
     constexpr friend bool holds_alternative(const AnyRefGeneric &inst) {
-        return inst._type == type_name_hash<T>;
+        return inst._type == type_name_hash<std::remove_cvref_t<T> >;
     }
-
     ///Get the value of type T 
     template<typename T>
-    friend T &get(const AnyRefGeneric &inst) {
-        return *static_cast<T *>(inst._ref);
+    constexpr friend auto get(const AnyRefGeneric &inst) 
+        -> std::add_lvalue_reference_t<std::conditional_t<is_const, std::add_const_t<T>, T> > {
+            using PtrRet = std::add_pointer_t<std::conditional_t<is_const, std::add_const_t<T>, T> >;
+        return *static_cast<PtrRet>(inst._ref);
     }
 
 protected:
     Ptr _ref;
     TypeHash _type;
-    
-
-
-
 };
 
+
+using AnyRef = AnyRefGeneric<false>;
+using AnyRefConst = AnyRefGeneric<true>; 
 
 #endif
