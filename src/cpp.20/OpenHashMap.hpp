@@ -242,10 +242,11 @@ public:
         std::size_t ofs = 0;
         for (auto &item: _items) { 
             if (is_occupied(ofs)) {
-                        std::destroy_at(&item.key_value);
+                    std::destroy_at(&item.key_value);
+                    set_not_occupied(ofs);
             }
             ++ofs;
-        }
+        }    
         _size = 0;
     }
 
